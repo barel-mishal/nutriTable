@@ -1,0 +1,50 @@
+{
+  "name": "my-qwik-basic-starter",
+  "description": "Demo App with Routing built-in (recommended)",
+  "type": "module",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "private": true,
+  "scripts": {
+    "build": "qwik build",
+    "build.client": "vite build",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.server": "vite build -c adapters/netlify-edge/vite.config.ts",
+    "build.types": "tsc --incremental --noEmit",
+    "deploy": "netlify deploy --build",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "fmt": "prettier --write .",
+    "fmt.check": "prettier --check .",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik",
+    "moh": "ts-node-esm src/ministry_of_health/mohGetData.ts && ts-node-esm src/ministry_of_health/mohDRI.ts && ts-node-esm src/ministry_of_health/mohCleanData.ts"
+  },
+  "devDependencies": {
+    "@builder.io/qwik": "^1.1.4",
+    "@builder.io/qwik-city": "^1.1.4",
+    "@netlify/edge-functions": "^2.0.0",
+    "@types/eslint": "8.37.0",
+    "@types/node": "^20.1.4",
+    "@typescript-eslint/eslint-plugin": "5.59.5",
+    "@typescript-eslint/parser": "5.59.5",
+    "axios": "^1.4.0",
+    "eslint": "8.40.0",
+    "eslint-plugin-qwik": "^1.1.4",
+    "netlify-cli": "^15.0.0",
+    "prettier": "2.8.8",
+    "typescript": "5.0.4",
+    "undici": "5.22.1",
+    "vite": "4.3.5",
+    "vite-tsconfig-paths": "4.2.0"
+  },
+  "dependencies": {
+    "@qwikbits/headless-ui": "^0.6.1",
+    "@qwikbits/utils": "^0.6.1",
+    "ts-node": "^10.9.1",
+    "zod": "^3.21.4"
+  }
+}
