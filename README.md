@@ -128,4 +128,5 @@ netlify deploy --build
 You must use the `--build` flag whenever you deploy. This ensures that the Edge Functions that this starter site relies on are generated and available when you deploy your site.
 
 Add `--prod` flag to deploy to production.
+
 # nutriTable

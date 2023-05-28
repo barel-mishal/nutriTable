@@ -1,7 +1,7 @@
 import type { z } from "zod";
 import fs from "fs";
 import path from "path";
-import { ageRangeDRISchema } from './DRISchema.ts';
+import { ageRangeDRISchema } from "./DRISchema.ts";
 
 import { fileURLToPath } from "url";
 import { exec } from "child_process";

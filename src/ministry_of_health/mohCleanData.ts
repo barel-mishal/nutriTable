@@ -26,12 +26,7 @@ const mohFiles = fs
   .readdirSync(MOH_PATH)
   .flatMap((file: string) => {
     if (path.extname(file) === ".json") {
-      return [
-        [
-          file.replace(".json", ""),
-          path.join(MOH_PATH, file),
-        ],
-      ];
+      return [[file.replace(".json", ""), path.join(MOH_PATH, file)]];
     } else {
       return [];
     }

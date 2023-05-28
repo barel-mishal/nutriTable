@@ -10,7 +10,9 @@ const __dirname = path.dirname(__filename);
 
 const newNameDir = "ministryOfHealthData";
 
-const mohPath = path.resolve(path.join(__dirname, "..", '..', 'public', newNameDir));
+const mohPath = path.resolve(
+  path.join(__dirname, "..", "..", "public", newNameDir)
+);
 
 // TODO: לכתוב קוד שיורץ ויכניס את המידע לשרת של האפליקציה
 

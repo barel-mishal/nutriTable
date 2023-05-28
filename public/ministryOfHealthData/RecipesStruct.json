@@ -1,1 +1,91 @@
-{"help":"https://data.gov.il/api/3/action/help_show?name=datastore_search","success":true,"result":{"include_total":true,"limit":8,"records_format":"objects","resource_id":"22612122-51ef-4b0d-81ba-b4c7a8720fda","total_estimation_threshold":null,"records":[{"_id":1,"שם שדה":"mmitzrach","תיאור":"קוד של המתכון ","יחידות":"אינדקס","ערך לדוגמא":10133,"הערות":"שדה code בטבלת מצרכים"},{"_id":2,"שם שדה":"mitzbsisi","תיאור":"קוד של מצרך במתכון","יחידות":"אינדקס","ערך לדוגמא":2634,"הערות":"שדה code בטבלת מצרכים"},{"_id":3,"שם שדה":"mishkal","תיאור":"משקל המצרך","יחידות":"גרם","ערך לדוגמא":100,"הערות":""},{"_id":4,"שם שדה":"retention","תיאור":"retention","יחידות":"מספר","ערך לדוגמא":381,"הערות":"חישוב הויטמינים והמינרלים שנותרו, בהתאם לסוג הבישול "},{"_id":5,"שם שדה":"ahuz","תיאור":"אחוז שומן","יחידות":"אחוז","ערך לדוגמא":3,"הערות":""},{"_id":6,"שם שדה":"mida","תיאור":"קוד יחידת המידה","יחידות":"מספר","ערך לדוגמא":700,"הערות":"שדה smlmida בטבלת יחידות מידה "},{"_id":7,"שם שדה":"kamut","תיאור":"כמות בגרם של יחידת המידה","יחידות":"גרם","ערך לדוגמא":100,"הערות":""},{"_id":8,"שם שדה":"is_visible","תיאור":"לא רלוונטי","יחידות":"","ערך לדוגמא":null,"הערות":""}],"fields":[{"id":"_id","type":"int"},{"id":"שם שדה","type":"text"},{"id":"תיאור","type":"text"},{"id":"יחידות","type":"text"},{"id":"ערך לדוגמא","type":"numeric"},{"id":"הערות","type":"text"}],"_links":{"start":"/api/3/action/datastore_search?resource_id=22612122-51ef-4b0d-81ba-b4c7a8720fda&limit=8","next":"/api/3/action/datastore_search?resource_id=22612122-51ef-4b0d-81ba-b4c7a8720fda&limit=8&offset=8"},"total":8,"total_was_estimated":false}}
+{
+  "help": "https://data.gov.il/api/3/action/help_show?name=datastore_search",
+  "success": true,
+  "result": {
+    "include_total": true,
+    "limit": 8,
+    "records_format": "objects",
+    "resource_id": "22612122-51ef-4b0d-81ba-b4c7a8720fda",
+    "total_estimation_threshold": null,
+    "records": [
+      {
+        "_id": 1,
+        "שם שדה": "mmitzrach",
+        "תיאור": "קוד של המתכון ",
+        "יחידות": "אינדקס",
+        "ערך לדוגמא": 10133,
+        "הערות": "שדה code בטבלת מצרכים"
+      },
+      {
+        "_id": 2,
+        "שם שדה": "mitzbsisi",
+        "תיאור": "קוד של מצרך במתכון",
+        "יחידות": "אינדקס",
+        "ערך לדוגמא": 2634,
+        "הערות": "שדה code בטבלת מצרכים"
+      },
+      {
+        "_id": 3,
+        "שם שדה": "mishkal",
+        "תיאור": "משקל המצרך",
+        "יחידות": "גרם",
+        "ערך לדוגמא": 100,
+        "הערות": ""
+      },
+      {
+        "_id": 4,
+        "שם שדה": "retention",
+        "תיאור": "retention",
+        "יחידות": "מספר",
+        "ערך לדוגמא": 381,
+        "הערות": "חישוב הויטמינים והמינרלים שנותרו, בהתאם לסוג הבישול "
+      },
+      {
+        "_id": 5,
+        "שם שדה": "ahuz",
+        "תיאור": "אחוז שומן",
+        "יחידות": "אחוז",
+        "ערך לדוגמא": 3,
+        "הערות": ""
+      },
+      {
+        "_id": 6,
+        "שם שדה": "mida",
+        "תיאור": "קוד יחידת המידה",
+        "יחידות": "מספר",
+        "ערך לדוגמא": 700,
+        "הערות": "שדה smlmida בטבלת יחידות מידה "
+      },
+      {
+        "_id": 7,
+        "שם שדה": "kamut",
+        "תיאור": "כמות בגרם של יחידת המידה",
+        "יחידות": "גרם",
+        "ערך לדוגמא": 100,
+        "הערות": ""
+      },
+      {
+        "_id": 8,
+        "שם שדה": "is_visible",
+        "תיאור": "לא רלוונטי",
+        "יחידות": "",
+        "ערך לדוגמא": null,
+        "הערות": ""
+      }
+    ],
+    "fields": [
+      { "id": "_id", "type": "int" },
+      { "id": "שם שדה", "type": "text" },
+      { "id": "תיאור", "type": "text" },
+      { "id": "יחידות", "type": "text" },
+      { "id": "ערך לדוגמא", "type": "numeric" },
+      { "id": "הערות", "type": "text" }
+    ],
+    "_links": {
+      "start": "/api/3/action/datastore_search?resource_id=22612122-51ef-4b0d-81ba-b4c7a8720fda&limit=8",
+      "next": "/api/3/action/datastore_search?resource_id=22612122-51ef-4b0d-81ba-b4c7a8720fda&limit=8&offset=8"
+    },
+    "total": 8,
+    "total_was_estimated": false
+  }
+}
