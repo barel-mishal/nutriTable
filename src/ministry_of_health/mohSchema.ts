@@ -180,10 +180,7 @@ export type TypeIngredientKey = typeof IngredientKeys[number];
 export type TypeFoodKey = keyof Omit<TypeIngredient, "units">;
 
 export const FoodKeys: readonly TypeFoodKey[] = [
-    "_id",
-    "Code",
-    "makor",
-    "smlmitzrach",
+    "tarich_idkun",
     "shmmitzrach",
     "protein",
     "total_fat",
@@ -255,8 +252,11 @@ export const FoodKeys: readonly TypeFoodKey[] = [
     "choline",
     "manganese",
     "tarich_ptiha",
-    "tarich_idkun",
     "english_name",
+    "_id",
+    "Code",
+    "makor",
+    "smlmitzrach",
 ] as const;
 
 export const IngredientKeysSet = new Set(IngredientKeys);
