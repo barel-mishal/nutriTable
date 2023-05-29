@@ -6,7 +6,7 @@ import { type TypeIngredient, zodIngredientSchema, FoodKeys, type TypeFoodKey } 
 
 export const QwikTable = component$((props: { [key: string]: any }) => {
   return <>
-  <div id="tableWrap" class="block w-full overflow-x-auto max-w">
+  <div id="tableWrap" class="block w-full overflow-x-auto max-w" style={{'height': '500px'}}>
     <table {...props} class="items-center w-full bg-transparent border-collapse ">
       <Slot  />
     </table>
@@ -20,7 +20,7 @@ export default component$(() => {
       const URL = `${loc.url.origin}/ministryOfHealthData/data/parsedFoods.json`;
       const res = await fetch(URL);
       // TODO: remove slice when I do not need to test the error handling
-      const data = (await res.json()).slice(0, 10);
+      const data = (await res.json()).slice(0, 30);
       const parsed = zodIngredientSchema.array().safeParse(data);
       if (!parsed.success) throw Promise.reject(parsed.error.message);
       return parsed.data
@@ -43,7 +43,8 @@ export default component$(() => {
     // TODO: remove slice when I do not need to test the error handling
     // TODO: change unit of ingredient
     // TODO: sort by some key
-    // TODO: i
+    // TODO: add search
+    // TODO: add infinite scroll
     return <>
     <div class={['']}>
       <div class={['m-5']}>
@@ -54,7 +55,7 @@ export default component$(() => {
                     return <>
                     <th 
                     key={index} 
-                    class={["px-6 border-b border-emerald-100 hover:border-emerald-600 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left text-emerald-800"]}>
+                    class={["px-6 sticky top-0 border-b bg-white border-emerald-100 hover:border-emerald-600 align-middle py-3 text-xs uppercase whitespace-nowrap font-semibold text-left text-emerald-800"]}>
                       {key}
                     </th>
                     </>})}
