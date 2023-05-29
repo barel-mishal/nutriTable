@@ -92,7 +92,7 @@ export const zodIngredientSchema = z.object({
 
 export type TypeIngredient = z.infer<typeof zodIngredientSchema>;
 
-export const shape: (keyof TypeIngredient)[] = [
+export const IngredientKeys: readonly (keyof TypeIngredient)[] = [
     "_id",
     "Code",
     "makor",
@@ -171,6 +171,8 @@ export const shape: (keyof TypeIngredient)[] = [
     "tarich_idkun",
     "english_name",
     "units",
-]
+] as const;
+
+export const IngredientKeysSet = new Set(IngredientKeys);
 
 
