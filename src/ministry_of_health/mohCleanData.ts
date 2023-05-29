@@ -95,12 +95,12 @@ export const parsedFoods = (() => {
   );
 
   const noneUnitsIngredients: any[] = [];
-  const parsed = mohFilesCleanNull["Ingredients"].map((food: any) => {
+  const parsed = mohFilesCleanNull["Ingredients"].map((food: any, index: number) => {
     let newIng;
     if (!unitsSmlMidaMap.has(Number(food.Code))) {
       noneUnitsIngredients.push(food);
       const unit: UnitsFoods = {
-        _id: "none",
+        _id: -index,
         mida: "-1",
         mmitzrach: `${food.Code}`,
         shmmida: "100 גרמים",
@@ -224,7 +224,7 @@ function parseDateTime(inputString: any) {
 }
 
 interface UnitsFoods {
-  _id: string;
+  _id: number;
   mida: string;
   mmitzrach: string;
   shmmida: string;
