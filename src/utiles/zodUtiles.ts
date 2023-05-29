@@ -30,4 +30,10 @@ export const zodConvertibleDateType = z.date().or(z.string()).transform((data) =
     }
     // If data is not a string, assume it's already a Date object
     return data;
+}).transform((data) => {
+    // If data is an invalid Date object, return "חסר תאריך". Otherwise, return the Date object converted to a string in the format "dd/MM/yyyy HH:mm:ss"
+    if (data === "") return "חסר תאריך";
+    if (isNaN(data.getTime())) return "תאריך לא תקין";
+    return `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}:${data.getMilliseconds()}`;
 });
+

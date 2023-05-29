@@ -1,6 +1,16 @@
-import { component$, useResource$, Resource } from "@builder.io/qwik";
+import { component$, useResource$, Resource, Slot } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { type TypeIngredient, zodIngredientSchema } from "~/ministry_of_health/mohSchema";
+import { type TypeIngredient, zodIngredientSchema, FoodKeys, type TypeFoodKey } from "~/ministry_of_health/mohSchema";
+
+export const QwikTable = component$((props: { [key: string]: any }) => {
+  return <>
+  <div id="Hi" class="block w-full overflow-x-auto max-w">
+    <table {...props} class="items-center w-full bg-transparent border-collapse">
+      <Slot  />
+    </table>
+  </div>
+  </>
+}) 
 
 export default component$(() => {
     const loc = useLocation();
@@ -13,6 +23,7 @@ export default component$(() => {
       if (!parsed.success) throw Promise.reject(parsed.error.message);
       return parsed.data
     });
+    
 
     return (
       <Resource
@@ -27,27 +38,28 @@ export default component$(() => {
 
   function Ingredients(props: { ingredients: TypeIngredient[] }) {
     const ingredients = props.ingredients;
+    // TODO: remove slice when I do not need to test the error handling
+    // TODO: change unit of ingredient
+    // TODO: sort by some key
+    // TODO: i
     return <>
-    <table>
+    <QwikTable key={'QwikTable'}>
         <thead>
             <tr>
-                <th>Header 1</th>
-                <th>Header 2</th>
-                <th>Header 3</th>
+                {FoodKeys.map((key, index) => <th key={index}>{key}</th>)}
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
+          {ingredients.map((ingredient, index) => <>
+            <tr key={index}>
+              {FoodKeys.map((key: TypeFoodKey, index) => {
+                const value = ingredient[key];
+              return <>
+                <td key={index}>{value}</td>
+              </>})}
             </tr>
-            <tr>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
+          </>)}
         </tbody>
-    </table>
+    </QwikTable>
     </>
   }
