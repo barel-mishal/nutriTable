@@ -87,6 +87,7 @@ export const ingredientSchema = z.object({
     "tarich_ptiha":zodConvertibleDateType,
     "tarich_idkun":zodConvertibleDateType,
     "english_name":z.string(),
-    "units":z.array(zodUnitsSchema)});
+    "units":z.array(zodUnitsSchema)
+});
 
 
