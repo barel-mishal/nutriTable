@@ -92,7 +92,11 @@ export const zodIngredientSchema = z.object({
 
 export type TypeIngredient = z.infer<typeof zodIngredientSchema>;
 
+
+
+// TODO: simplify the following types
 type TypeKeyOfIngredient = keyof TypeIngredient;
+export type TypeIngredientValue = TypeIngredient[TypeKeyOfIngredient];
 
 export const IngredientKeys: readonly TypeKeyOfIngredient[] = [
     "_id",

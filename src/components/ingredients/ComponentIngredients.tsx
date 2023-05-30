@@ -1,10 +1,10 @@
 import { component$, useResource$, Resource, Slot, useStore, createContextId, useContextProvider, useContext } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { type TypeIngredient, zodIngredientSchema, FoodKeys, type TypeFoodKey } from "~/ministry_of_health/mohSchema";
+import { type TypeIngredient, zodIngredientSchema, FoodKeys } from "~/ministry_of_health/mohSchema";
 
 
-
-function useQwikTableContext<T, D extends keyof T>(data: T[], fields: D[]) {
+type KeysOfNumberOrStringProps<T> = { [K in keyof T]: T[K] extends string | number ? K : never }[keyof T];
+function useQwikTableContext<T, D extends KeysOfNumberOrStringProps<T>>(data: T[], fields: D[]) {
   const store = useStore({
     height: 500,
     fieldHeight: 30,
@@ -17,9 +17,10 @@ function useQwikTableContext<T, D extends keyof T>(data: T[], fields: D[]) {
   }
 }
 
-export type TypeQWikTable<T, D extends keyof T> = ReturnType<typeof useQwikTableContext<T, D>>;
+export type TypeQWikTable<T, D extends KeysOfNumberOrStringProps<T>> = ReturnType<typeof useQwikTableContext<T, D>>;
 
-export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, keyof TypeIngredient>
+type D = KeysOfNumberOrStringProps<TypeIngredient>
+export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, D>
 export const qwikTableIngredientsContextId = createContextId<TypeQwikTableContextId>('QwikTableContext');
 
 export const QwikTable = component$((props: {tableContext: TypeQwikTableContextId}) => {
@@ -71,19 +72,7 @@ export default component$(() => {
       <div class={['m-5']}>
         <QwikTable key={'QwikTable'} tableContext={table}>
             <QwikTableHead key={'QwikTableHead'} />
-            <tbody>
-              {ingredients.map((ingredient, index) => <>
-                <tr key={index}>
-                  {FoodKeys.map((key: TypeFoodKey, index) => {
-                    const value = ingredient[key];
-                  return <>
-                    <td key={index} class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-emerald-800">
-                      {value}
-                      </td>
-                  </>})}
-                </tr>
-              </>)}
-            </tbody>
+            <QwikTableBody key={'QwikTableBody'} />
         </QwikTable>
       </div>
     </div>
@@ -105,6 +94,25 @@ export default component$(() => {
                 </>})}
             </tr>
         </thead>
+    </>
+  })
+  const QwikTableBody = component$(() => {
+    const table = useContext(qwikTableIngredientsContextId);
+
+    return <>
+      <tbody>
+        {table.data.map((row, index) => <>
+          <tr key={index}>
+            {table.fields.map((key, index) => {
+              const value =row[key];
+            return <>
+              <td key={index} class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-emerald-800">
+                {value}
+                </td>
+            </>})}
+          </tr>
+        </>)}
+      </tbody>
     </>
   })
 
