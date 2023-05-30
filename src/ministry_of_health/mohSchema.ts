@@ -177,9 +177,11 @@ export const IngredientKeys: readonly TypeKeyOfIngredient[] = [
 
 export type TypeIngredientKey = typeof IngredientKeys[number];
 
-export type TypeFoodKey = keyof Omit<TypeIngredient, "units">;
+export type TypeFoodKey = Exclude<TypeIngredientKey, "units">;
 
-export const FoodKeys: readonly TypeFoodKey[] = [
+export type TypeFoodKeys = TypeFoodKey[];
+
+export const FoodKeys: TypeFoodKeys = [
     "tarich_idkun",
     "shmmitzrach",
     "protein",
@@ -257,7 +259,8 @@ export const FoodKeys: readonly TypeFoodKey[] = [
     "Code",
     "makor",
     "smlmitzrach",
-] as const;
+];
+
 
 export const IngredientKeysSet = new Set(IngredientKeys);
 
