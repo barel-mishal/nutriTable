@@ -77,7 +77,7 @@ export default component$(() => {
       </div>
     </div>
     </>
-  })
+  });
 
   const QwikTableHead = component$(() => {
     const table = useContext(qwikTableIngredientsContextId);
@@ -95,7 +95,7 @@ export default component$(() => {
             </tr>
         </thead>
     </>
-  })
+  });
   const QwikTableBody = component$(() => {
     const table = useContext(qwikTableIngredientsContextId);
 
@@ -114,5 +114,5 @@ export default component$(() => {
         </>)}
       </tbody>
     </>
-  })
+  });
 
