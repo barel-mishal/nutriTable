@@ -1,0 +1,37 @@
+Synthesizing 1/10 solutions
+
+=======
+Suggestion 1
+
+      <div class={['col-start-1 row-start-1 bg-pink-50/60 sticky top-0 h-full']}  >
+        <table class={[]} style={'table-layout: fixed'}>
+          <thead>
+            <tr>
+              <th>
+                google
+              </th>
+              <th>
+                google
+              </th>
+              <th>
+                google
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {renderedRows.value.map(key => {
+              return <tr key={key} class={['h-12 whitespace-nowrap']}>
+                <td>
+                  content {key}
+                </td>
+                <td>
+                  content
+                </td>
+                <td>
+                  content
+                </td>
+              </tr>
+            })}
+          </tbody>
+        </table>
+      </div>
