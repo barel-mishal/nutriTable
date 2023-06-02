@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { zodConvertibleNumericType, zodConvertibleDateType } from "~/utiles/zodUtiles";
+import { zodConvertibleNumericType, zodConvertibleDateType } from "../utiles/zodUtiles.ts";
 
 export const zodUnitsSchema = z.object({
     "_id":z.number(),
@@ -8,6 +8,14 @@ export const zodUnitsSchema = z.object({
     "mishkal":zodConvertibleNumericType,
     "shmmida":z.string(),
 });
+
+export const zodIngredientFields = z.object({
+    field: z.string(),
+    title: z.string(),
+    id: z.number(),
+    unit: z.string().optional(),
+    description: z.string().optional(),
+})
 
 export const zodIngredientSchema = z.object({
     "_id":z.number(),
@@ -87,7 +95,7 @@ export const zodIngredientSchema = z.object({
     "tarich_ptiha":zodConvertibleDateType,
     "tarich_idkun":zodConvertibleDateType,
     "english_name":z.string(),
-    "units":z.array(zodUnitsSchema)
+    "units":z.array(zodUnitsSchema),
 });
 
 export type TypeIngredient = z.infer<typeof zodIngredientSchema>;

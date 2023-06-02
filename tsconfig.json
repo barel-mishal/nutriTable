@@ -9,7 +9,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

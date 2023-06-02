@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { zodIngredientFields, zodIngredientSchema } from "./mohSchema.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -38,8 +39,16 @@ const mohFiles = fs
     return acc;
   }, {});
 
+  export const setIngredientsKeys = new Set();
+  function insertToSet(obj: any) {
+    for (const key in obj) {
+      setIngredientsKeys.add(key);
+    }
+  }
+
 const mohFilesCleanNull = objectMap(mohFiles, (obj: any, key: any) => {
   const cleaned = obj.result.records.map((record: any) => {
+    insertToSet(record)
     const cleanedObj = {};
     const nullebelpaths = [];
     for (const prop in record) {
@@ -56,6 +65,8 @@ const mohFilesCleanNull = objectMap(mohFiles, (obj: any, key: any) => {
   return cleaned;
 });
 // console.log('foods', mohFilesCleanNull);
+
+
 
 export const parsedFoods = (() => {
   const oldParsedFoods = JSON.parse(
@@ -105,7 +116,7 @@ export const parsedFoods = (() => {
         mmitzrach: `${food.Code}`,
         shmmida: "100 גרמים",
         englishName: "100 grams",
-        mishkal: "100",
+        mishkal: 100,
       };
       newIng = { ...food, units: [unit] };
     } else {
@@ -123,6 +134,31 @@ export const parsedFoods = (() => {
     }
     return newIng;
   });
+
+
+  const setFieldsNames = new Set()
+  const fieldsIngredients = mohFilesCleanNull["IngredientsStruct"].map((field: any) => {
+      // "_id":2,"שם שדה":"smlmitzrach","תיאור":"סמל מצרך","יחידות":"מספר" ,"ערך לדוגמא":"63135030.0","ערכים אפשריים":"","הערות":""
+      if (field["שם שדה"] === "code") {
+        field["שם שדה"] = "Code"
+      } else {
+        console.log('field["שם שדה"]', field["שם שדה"], 'משרד הבריאות תיקן את Code מ code')
+      }
+
+      setFieldsNames.add(field["שם שדה"])
+      const fieldObj = {
+        field: field["שם שדה"],
+        id: field["_id"],
+        title: field["תיאור"],
+        unit: field["יחידות"],
+        description: field["הערות"],
+      }
+      return fieldObj;
+    }
+  );
+
+
+
   console.log(
     "noneUnitsIngredients",
     parsed.slice(0, 10).map((m: any) => m.shmmitzrach),
@@ -130,6 +166,16 @@ export const parsedFoods = (() => {
     noneUnitsIngredients.length,
     parsed.length
   );
+
+  const difference = new Set([...setFieldsNames].filter(x => !setIngredientsKeys.has(x)));
+  console.log(
+    'fileds names',
+    // setFieldsNames,
+    // setIngredientsKeys,
+    difference,
+  )
+
+
   fs.writeFileSync(
     path.join(MOH_PATH, "data", "noneUnitsIngredients.json"),
     JSON.stringify(
@@ -138,10 +184,32 @@ export const parsedFoods = (() => {
       2
     )
   );
-  fs.writeFileSync(
-    path.join(MOH_PATH, "data", "parsedFoods.json"),
-    JSON.stringify(parsed)
-  );
+
+  const parsedAgain = zodIngredientSchema.array().safeParse(parsed);
+  if (!parsedAgain.success) {
+    fs.writeFileSync(
+      path.join(MOH_PATH, "data", "parsedFoods.json"),
+      JSON.stringify(parsedAgain.error, null, 2)
+    );
+  } else {
+    fs.writeFileSync(
+      path.join(MOH_PATH, "data", "parsedFoods.json"),
+      JSON.stringify(parsedAgain.data)
+    );
+  }
+
+  const parsedFields = zodIngredientFields.array().safeParse(fieldsIngredients);
+  if (!parsedFields.success) {
+    fs.writeFileSync(
+      path.join(MOH_PATH, "data", "parsedFields.json"),
+      JSON.stringify(parsedFields.error, null, 2)
+    );
+  } else {
+    fs.writeFileSync(
+      path.join(MOH_PATH, "data", "parsedFields.json"),
+      JSON.stringify(parsedFields.data)
+    );
+  }
 
   // add datetime to the foods object on tarich_idkun try sort by datetime to make sure the latest is first to see if moh is updating the data
   const updatedParsed = parsed.map((food: any) => {
@@ -229,5 +297,5 @@ interface UnitsFoods {
   mmitzrach: string;
   shmmida: string;
   englishName: string;
-  mishkal: string;
+  mishkal: number;
 }
