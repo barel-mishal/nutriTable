@@ -105,9 +105,11 @@ export const parsedFoods = (() => {
     new Map()
   );
 
+  const setTarichIdkun: string[] = [];
   const noneUnitsIngredients: any[] = [];
   const parsed = mohFilesCleanNull["Ingredients"].map((food: any, index: number) => {
     let newIng;
+    setTarichIdkun.push(food.tarich_idkun);
     if (!unitsSmlMidaMap.has(Number(food.Code))) {
       noneUnitsIngredients.push(food);
       const unit: UnitsFoods = {
@@ -174,6 +176,7 @@ export const parsedFoods = (() => {
     // setIngredientsKeys,
     difference,
   )
+  
 
 
   fs.writeFileSync(
@@ -183,7 +186,8 @@ export const parsedFoods = (() => {
       null,
       2
     )
-  );
+    );
+
 
   const parsedAgain = zodIngredientSchema.array().safeParse(parsed);
   if (!parsedAgain.success) {
@@ -195,9 +199,10 @@ export const parsedFoods = (() => {
     fs.writeFileSync(
       path.join(MOH_PATH, "data", "parsedFoods.json"),
       JSON.stringify(parsedAgain.data)
-    );
-  }
+      );
+    }
 
+    
   const parsedFields = zodIngredientFields.array().safeParse(fieldsIngredients);
   if (!parsedFields.success) {
     fs.writeFileSync(
@@ -226,9 +231,15 @@ export const parsedFoods = (() => {
     path.join(MOH_PATH, "data", "sortedFoods.json"),
     JSON.stringify(updatedParsed, null, 2)
   );
+  fs.writeFileSync(
+    path.join(MOH_PATH, "data", "setTarichIdkun.json"),
+    JSON.stringify(setTarichIdkun, null, 2)
+  );
   return parsed;
 })();
 // console.log('parsedFoods', parsedFoods, parsedFoods.length);
+
+
 
 export const groupByInputId = (objectArray: Element[], property: string) => {
   return objectArray.reduce((acc: any, obj: any) => {
