@@ -11,7 +11,7 @@ import { type KeysOfNumberOrStringProps } from "~/utiles/utilTypes";
 import tableStyle from "./ComponentIngredients.css?inline";
 
 
-function useQwikTableContext<T, D extends KeysOfNumberOrStringProps<T>>(table: T[], fields: D[]) {
+function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
   const tableProperties = useStore({
     height: 400,
     width: 100,
@@ -49,8 +49,6 @@ function useQwikTableContext<T, D extends KeysOfNumberOrStringProps<T>>(table: T
     const tableRowHeight = addCssUnit(tableProperties.rowHeight);
     const tableTotalRowsHeight = addCssUnit((tableProperties.rowHeight * dataStore.length) + hHeader + 45);
 
-    console.log('fields', valueFields.children);
-
     valueView.style.setProperty('--table-height', tableHeight);
     valueView.style.setProperty('--table-width', tableWidth);
     valueView.style.setProperty('--table-row-height', tableRowHeight);
@@ -70,18 +68,31 @@ function useQwikTableContext<T, D extends KeysOfNumberOrStringProps<T>>(table: T
   }
 }
 
-export type TypeQWikTable<T, D extends KeysOfNumberOrStringProps<T>> = ReturnType<typeof useQwikTableContext<T, D>>;
-type D = KeysOfNumberOrStringProps<TypeIngredient>
+type Fields<T> = {
+  field: KeysOfNumberOrStringProps<T>;
+  title: string;
+  width?: number;
+  unit?: string;
+  align?: 'left' | 'right' | 'center';
+  sort?: 'asc' | 'desc' | 'none';
+  filter?: 'asc' | 'desc' | 'none';
+  filterValue?: string;
+  filterType?: 'string' | 'number';
+  filterOptions?: string[];
+}[]
+
+export type TypeQWikTable<T, D extends Fields<T>> = ReturnType<typeof useQwikTableContext<T, D>>;
+type D = Fields<TypeIngredient>;
 export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, D>
 
 export const qwikTableIngredientsContextId = createContextId<TypeQwikTableContextId>('QwikTableContext');
 
-const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: D[]}) => {
+const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: D}) => {
     const con = useQwikTableContext(props.data, props.fields);
     return <>
     <div ref={con.refView} class={["virtualizer-view"]} onScroll$={con.onScroll}>
       <div ref={con.refTotal} class={['virtualizer']}></div>
-      <div class={["table-view"]} >
+      <div class={["table-view"]}>
         <table class={['table']}>
           <thead>
             <tr ref={con.refHeader} class={["header"]}>
@@ -141,7 +152,7 @@ export default component$(() => {
       const URL = `${loc.url.origin}/ministryOfHealthData/data/parsedFoods.json`;
       const res = await fetch(URL);
       // TODO: remove slice when I do not need to test the error handling
-      const data = (await res.json()).slice(0, 40);
+      const data = (await res.json()).slice(0, 100);
       const parsed = zodIngredientSchema.array().safeParse(data);
       if (!parsed.success) throw Promise.reject(parsed.error.message);
       return parsed.data
@@ -149,13 +160,20 @@ export default component$(() => {
     
 
     return <>
-    <div class={['grid place-content-center h-screen']}>
-      <Resource
-        value={list}
-        onRejected={(err) => <div>Error: {err.message}</div>}
-        onPending={() => <div>Loading...</div>}
-        onResolved={(list) => <QwikVirtualTable data={list} fields={FoodKeys} />}
-      />
+    <div class={['grid grid-cols-6 justify-center h-screen']}>
+      <div class={['col-start-2 row-start-2 col-span-3']}>
+        <button class={['px-5 py-2 bg-sky-800 text-sky-50 rounded-lg ring-1 ring-sky-200']}>
+          קבל נתונים תזונתיים קלוריות, המלצות צריכה ועוד
+        </button>
+      </div>
+      <div class={['grid place-content-center col-start-2 col-span-4']}>
+        <Resource
+          value={list}
+          onRejected={(err) => <div>Error: {err.message}</div>}
+          onPending={() => <div>Loading...</div>}
+          onResolved={(list) => <QwikVirtualTable data={list} fields={FoodKeys} />}
+        />
+      </div>
     </div>
     </>
     ;
