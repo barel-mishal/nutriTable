@@ -3,8 +3,6 @@ import { useLocation } from "@builder.io/qwik-city";
 import { type TypeIngredient, zodIngredientSchema, zodIngredientFields, type TypeFieldsIngredient } from "~/ministry_of_health/mohSchema";
 import QwikVirtualTable from "../QwikVirtualTable/QwikVirtualTableComponent";
 
-
-
 export const ComponentIngredients = component$(() => {
   return <>
   <Slot />

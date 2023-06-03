@@ -60,13 +60,15 @@ function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
       dataStore,
       fields: fieldsStore,
     }
-  }
+}
+
+export type TypeQWikTable<T, D extends Fields<T>> = ReturnType<typeof useQwikTableContext<T, D>>;
   
-  export type TypeQWikTable<T, D extends Fields<T>> = ReturnType<typeof useQwikTableContext<T, D>>;
+export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, TypeFieldsIngredient>
+
+export const qwikTableIngredientsContextId = createContextId<TypeQwikTableContextId>('QwikTableContext');
   
-  export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, TypeFieldsIngredient>
-  export const qwikTableIngredientsContextId = createContextId<TypeQwikTableContextId>('QwikTableContext');
-  const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: TypeFieldsIngredient}) => {
+const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: TypeFieldsIngredient}) => {
       const con = useQwikTableContext(props.data, props.fields);
       return <>
       <div ref={con.refView} class={["virtualizer-view"]} onScroll$={con.onScroll}>
@@ -97,6 +99,6 @@ function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
         </div>
       </div>
       </>
-  });
+});
 
-  export default QwikVirtualTable;
+export default QwikVirtualTable;

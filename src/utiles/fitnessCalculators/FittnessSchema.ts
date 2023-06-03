@@ -71,17 +71,15 @@ export const FittnessSchema = z.object({
   personalGoal: enumGoals.optional(),
   personalGoalDate: z.string().optional(),
   personalGoalWeight: numberOrStringFloat.optional(),
-  name: z.string().default(Date().toLocaleString()),
   daliyCalorieDifference: numberOrStringFloat.optional(),
   dailyCaloriesIntake: numberOrStringFloat.optional(),
   selectedDriValue: z.string().optional(),
   totalDailyEnergyExpenditure: z.string().or(z.number()).optional(),
 });
 
-export type FittnessType = z.infer<typeof FittnessSchema>;
-export type KeyofFittnessType = keyof FittnessType;
+export type TypeFittness = z.infer<typeof FittnessSchema>;
+export type KeyofFittnessType = keyof TypeFittness;
 export const MOST_HAVE_PARAMETERS = [
-  "name",
   "gender",
   "age",
   "activityLevel",
@@ -192,3 +190,5 @@ export const PERSONAL_GOAL = "personalGoal";
 export const PERSONAL_GOAL_WEIGHT = "personalGoalWeight";
 export const DAILY_CALORIE_INTAKE = "dailyCaloriesIntake";
 export const DAILY_CALORIE_DIFFERENCE = "daliyCalorieDifference";
+
+
