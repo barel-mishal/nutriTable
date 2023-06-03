@@ -6,10 +6,8 @@
 
 import { component$, useResource$, Resource, useStore, createContextId, useComputed$, useSignal, $, type QwikUIEvent, useStylesScoped$, useVisibleTask$ } from "@builder.io/qwik";
 import { useLocation } from "@builder.io/qwik-city";
-import { type TypeIngredient, zodIngredientSchema, FoodKeys } from "~/ministry_of_health/mohSchema";
-import { type KeysOfNumberOrStringProps } from "~/utiles/utilTypes";
+import { type TypeIngredient, zodIngredientSchema, zodIngredientFields, type Fields, type TypeFieldsIngredient } from "~/ministry_of_health/mohSchema";
 import tableStyle from "./ComponentIngredients.css?inline";
-
 
 function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
   const tableProperties = useStore({
@@ -24,6 +22,7 @@ function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
     return Math.floor(tableProperties.height/tableProperties.rowHeight) + tableProperties.ADD_ITEMS;
   });
   const dataStore = useStore(table);
+  const fieldsStore = useStore(fields);
   const renderedRows = useSignal(dataStore.slice(tableProperties.scrollStartPosition, computeNumberOfRows.value));    
   const onScroll = $((e: QwikUIEvent<HTMLDivElement>, el: HTMLDivElement) => {
     tableProperties.scrollStartPosition = Math.floor(el.scrollTop / tableProperties.rowHeight);
@@ -32,6 +31,7 @@ function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
     const ee = end;
     renderedRows.value = dataStore.slice(s, ee);
   });
+  
   useStylesScoped$(tableStyle)
   const refView = useSignal<HTMLDivElement>();
   const refTotal = useSignal<HTMLDivElement>();
@@ -64,30 +64,17 @@ function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
     renderedRows,
     tableProperties,
     dataStore,
-    fields,
+    fields: fieldsStore,
   }
 }
 
-type Fields<T> = {
-  field: KeysOfNumberOrStringProps<T>;
-  title: string;
-  width?: number;
-  unit?: string;
-  align?: 'left' | 'right' | 'center';
-  sort?: 'asc' | 'desc' | 'none';
-  filter?: 'asc' | 'desc' | 'none';
-  filterValue?: string;
-  filterType?: 'string' | 'number';
-  filterOptions?: string[];
-}[]
-
 export type TypeQWikTable<T, D extends Fields<T>> = ReturnType<typeof useQwikTableContext<T, D>>;
-type D = Fields<TypeIngredient>;
-export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, D>
+
+export type TypeQwikTableContextId = TypeQWikTable<TypeIngredient, TypeFieldsIngredient>
 
 export const qwikTableIngredientsContextId = createContextId<TypeQwikTableContextId>('QwikTableContext');
 
-const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: D}) => {
+const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: TypeFieldsIngredient}) => {
     const con = useQwikTableContext(props.data, props.fields);
     return <>
     <div ref={con.refView} class={["virtualizer-view"]} onScroll$={con.onScroll}>
@@ -95,42 +82,21 @@ const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: D})
       <div class={["table-view"]}>
         <table class={['table']}>
           <thead>
+
             <tr ref={con.refHeader} class={["header"]}>
-              <th>
-                אינדקס
-              </th>
-              <th>
-                שם מצרך
-              </th>
-              <th>
-                חלבון
-              </th>
-              <th>
-                שומן
-              </th>
-              <th>
-                פחמימה
-              </th>
+            {con.fields.map((key) => {
+              return <>
+                <th>{key.field && key.title}</th>
+              </>
+            })}
             </tr>
           </thead>
           <tbody ref={con.refFields}>
             {con.renderedRows.value.map((key) => {
               return <tr key={key._id} class={['row']}>
-                <td>
-                  {key._id}
-                </td>
-                <td>
-                  {key.shmmitzrach}
-                </td>
-                <td>
-                  {key.protein}
-                </td>
-                <td>
-                  {key.total_fat}
-                </td>
-                <td>
-                  {key.carbohydrates}
-                </td>
+                {con.fields.map((field) => {
+                  return <td key={key['_id']}>{key[field.field]}</td>
+                })}
               </tr>
             })}
           </tbody>
@@ -148,14 +114,20 @@ export const ComponentIngredients = component$(() => {
 
 export default component$(() => {
     const loc = useLocation();
-    const list = useResource$<TypeIngredient[]>(async () => {
+    const list = useResource$<{ingredients: TypeIngredient[], fields: TypeFieldsIngredient}>(async () => {
       const URL = `${loc.url.origin}/ministryOfHealthData/data/parsedFoods.json`;
+      const URL2 = `${loc.url.origin}/ministryOfHealthData/data/parsedFields.json`;
       const res = await fetch(URL);
+      const res2 = await fetch(URL2);
       // TODO: remove slice when I do not need to test the error handling
       const data = (await res.json()).slice(0, 100);
+      const data2 = (await res2.json()).slice(0, 100);
       const parsed = zodIngredientSchema.array().safeParse(data);
+      const parsed2 = zodIngredientFields.array().safeParse(data2);
       if (!parsed.success) throw Promise.reject(parsed.error.message);
-      return parsed.data
+      if (!parsed2.success) throw Promise.reject(parsed2.error.message);
+      const fields = parsed2.data as unknown as TypeFieldsIngredient;
+      return {ingredients: parsed.data, fields}
     });
     
 
@@ -171,7 +143,7 @@ export default component$(() => {
           value={list}
           onRejected={(err) => <div>Error: {err.message}</div>}
           onPending={() => <div>Loading...</div>}
-          onResolved={(list) => <QwikVirtualTable data={list} fields={FoodKeys} />}
+          onResolved={(list) => <QwikVirtualTable data={list.ingredients} fields={list.fields} />}
         />
       </div>
     </div>

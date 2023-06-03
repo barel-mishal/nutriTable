@@ -2,7 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { zodIngredientFields, zodIngredientSchema } from "./mohSchema.ts";
+import { zodIngredientFields, zodIngredientSchema } from "./mohSchema";
 
 const __filename = fileURLToPath(import.meta.url);
 

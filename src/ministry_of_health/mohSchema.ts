@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { zodConvertibleNumericType, zodConvertibleDateType } from "../utiles/zodUtiles.ts";
+import { KeysOfNumberOrStringProps } from "~/utiles/utilTypes";
+import { zodConvertibleNumericType, zodConvertibleDateType } from "~/utiles/zodUtiles";
 
 export const zodUnitsSchema = z.object({
     "_id":z.number(),
@@ -9,13 +10,7 @@ export const zodUnitsSchema = z.object({
     "shmmida":z.string(),
 });
 
-export const zodIngredientFields = z.object({
-    field: z.string(),
-    title: z.string(),
-    id: z.number(),
-    unit: z.string().optional(),
-    description: z.string().optional(),
-})
+
 
 export const zodIngredientSchema = z.object({
     "_id":z.number(),
@@ -98,12 +93,42 @@ export const zodIngredientSchema = z.object({
     "units":z.array(zodUnitsSchema),
 });
 
-export type TypeIngredient = z.infer<typeof zodIngredientSchema>;
+export const zodIngredientFields = z.object({
+    field: z.string(),
+    title: z.string(),
+    id: z.number(),
+    unit: z.string().optional(),
+    description: z.string().optional(),
+});
 
+export type IngredientFields = z.infer<typeof zodIngredientFields>;
+export type Fields<T> = {
+    field: KeysOfNumberOrStringProps<T>;
+    title: string;
+    id: string;
+    unit: string;
+    description: string;
+    // unit?: string;
+    // align?: 'left' | 'right' | 'center';
+    // sort?: 'asc' | 'desc' | 'none';
+    // filter?: 'asc' | 'desc' | 'none';
+    // filterValue?: string;
+    // filterType?: 'string' | 'number';
+    // filterOptions?: string[];
+  }[];
+
+
+
+
+  
+
+export type TypeIngredient = z.infer<typeof zodIngredientSchema>;
+export type TypeFieldsIngredient = Fields<TypeIngredient>;
 
 
 // TODO: simplify the following types
 type TypeKeyOfIngredient = keyof TypeIngredient;
+
 export type TypeIngredientValue = TypeIngredient[TypeKeyOfIngredient];
 
 export const IngredientKeys: readonly TypeKeyOfIngredient[] = [
