@@ -8,17 +8,6 @@ const FitnessCalculator = component$((props: any) => {
     const nameSignal = useSignal<string>(props.name || '');
     const fitnessStore = useStore<Partial<TypeFittness>>(props.fitnessStore || {});
 
-    // const computedGender = () => {
-    //     const defaultOption = {value: 'gneder', title: 'מין', disabled: false, selected: !fitnessStore.gender, label: 'מין', id: `input-gneder`}
-    //     return [
-    //         <option key={defaultOption.id} value={defaultOption.value} disabled={defaultOption.disabled}>{defaultOption.label}</option>,
-    //         ...genders.english.map((item, index) => {
-    //             const option = {value: item, title: item, disabled: false, selected: fitnessStore.gender === item, label: genders.hebrew[index], id: `select-${item}-${index}`}
-    //             return <option key={option.id} value={option.value} disabled={option.disabled}>{option.label}</option>
-    //         })
-    //       ]
-    // };
-
     const computeActivityLevel = $(() => {
         const defaultOption ={value: 'activityLevel', title: 'פעילות', disabled: false, selected: !fitnessStore.activityLevel, label: 'פעילות', id: `input-activityLevel`}
         return [
@@ -42,7 +31,7 @@ const FitnessCalculator = component$((props: any) => {
 
 
     return <>
-    <div class={'h-screen'}>
+    <div class={'h-screen grid place-content-center'}>
         <QwikInput 
             title="שם:" 
             id="name" 
@@ -50,6 +39,7 @@ const FitnessCalculator = component$((props: any) => {
             type="text" 
             inputMode="text"
             value={nameSignal.value} 
+            onInput$={(e, el) => nameSignal.value = el.value}
         />
         <QwikSelect 
             title="מין אישה או גבר" 
