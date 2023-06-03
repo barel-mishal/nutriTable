@@ -93,11 +93,13 @@ const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: Typ
           </thead>
           <tbody ref={con.refFields}>
             {con.renderedRows.value.map((key) => {
-              return <tr key={key._id} class={['row']}>
-                {con.fields.map((field) => {
-                  return <td key={key['_id']}>{key[field.field]}</td>
-                })}
-              </tr>
+              return <>
+                <tr key={key._id} class={['row']}>
+                  {con.fields.map((field) => {
+                    return <td key={key['_id']}>{key[field.field]}</td>
+                  })}
+                </tr>
+              </>
             })}
           </tbody>
         </table>
