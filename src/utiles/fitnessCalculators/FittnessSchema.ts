@@ -78,7 +78,12 @@ export const FittnessSchema = z.object({
 });
 
 export type TypeFittness = z.infer<typeof FittnessSchema>;
-export type KeyofFittnessType = keyof TypeFittness;
+export type KeyofFittnessType = keyof Partial<TypeFittness>;
+export type TypeFittnessAdjusted = {
+  [K in keyof TypeFittness]: TypeFittness[K] extends string | Date | undefined | number | boolean ? TypeFittness[K] : never;
+};
+
+
 export const MOST_HAVE_PARAMETERS = [
   "gender",
   "age",
