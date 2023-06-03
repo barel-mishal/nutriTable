@@ -6,7 +6,6 @@ import ComponentIngredients from "~/components/ingredients/ComponentIngredients"
 export default component$(() => {
   return (
     <>
-    
       <ComponentIngredients />
     </>
   );
