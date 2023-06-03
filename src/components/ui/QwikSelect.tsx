@@ -1,4 +1,4 @@
-import { type QwikIntrinsicElements, component$, type QRL, Slot, type Component } from "@builder.io/qwik";
+import { type QwikIntrinsicElements, component$, type QRL, Slot } from "@builder.io/qwik";
 
 
 export interface Options extends Partial<QwikIntrinsicElements['option']> {

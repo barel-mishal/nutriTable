@@ -28,13 +28,10 @@ export default component$(() => {
     });
 
     return <>
-    <div class={['grid grid-cols-6 justify-center h-screen']}>
-      <div class={['col-start-2 row-start-2 col-span-3']}>
-        <button class={['px-5 py-2 bg-sky-800 text-sky-50 rounded-lg ring-1 ring-sky-200']}>
-          קבל נתונים תזונתיים קלוריות, המלצות צריכה ועוד
-        </button>
+    <div class={['grid h-screen']}>
+      <div class={['']}>
       </div>
-      <div class={['grid place-content-center col-start-2 col-span-4']}>
+      <div class={['grid']}>
         <Resource
           value={list}
           onRejected={(err) => <div>Error: {err.message}</div>}

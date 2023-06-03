@@ -5,12 +5,12 @@ import tableStyle from "./TableStyle.css?inline";
 
 function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
     const tableProperties = useStore({
-      height: 400,
+      height: 100,
       width: 100,
       rowHeight: 48,
       maxFieldWidth: 250,
       scrollStartPosition: 0,
-      ADD_ITEMS: 10,
+      ADD_ITEMS: 20,
     });
     const computeNumberOfRows = useComputed$(() => {
       return Math.floor(tableProperties.height/tableProperties.rowHeight) + tableProperties.ADD_ITEMS;
@@ -38,7 +38,7 @@ function useQwikTableContext<T, D extends Fields<T>>(table: T[], fields: D) {
       const valueFields = refFields.value;
       if (!valueView || !valueHeight || !valueHeader || !valueFields) return;
       const hHeader = valueHeader.clientHeight;
-      const tableHeight = addCssUnit(tableProperties.height);
+      const tableHeight = addCssUnit(tableProperties.height, 'vh');
       const tableWidth = addCssUnit(tableProperties.width, '%');
       const tableRowHeight = addCssUnit(tableProperties.rowHeight);
       const tableTotalRowsHeight = addCssUnit((tableProperties.rowHeight * dataStore.length) + hHeader + 45);
