@@ -82,7 +82,6 @@ const QwikVirtualTable = component$((props: {data: TypeIngredient[], fields: Typ
       <div class={["table-view"]}>
         <table class={['table']}>
           <thead>
-
             <tr ref={con.refHeader} class={["header"]}>
             {con.fields.map((key) => {
               return <>
