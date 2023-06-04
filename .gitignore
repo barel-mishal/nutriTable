@@ -40,3 +40,8 @@ lerna-debug.log*
 
 # Netlify
 .netlify
+
+
+# rust
+Cargo.lock
+api_rs

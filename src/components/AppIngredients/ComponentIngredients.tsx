@@ -1,5 +1,4 @@
 import { component$, useResource$, Resource, Slot } from "@builder.io/qwik";
-import { useLocation } from "@builder.io/qwik-city";
 import { type TypeIngredient, zodIngredientSchema, zodIngredientFields, type TypeFieldsIngredient } from "~/ministry_of_health/mohSchema";
 import QwikVirtualTable from "../QwikVirtualTable/QwikVirtualTableComponent";
 
@@ -10,15 +9,15 @@ export const ComponentIngredients = component$(() => {
 });
 
 export default component$(() => {
-    const loc = useLocation();
+    // const loc = useLocation();
     const list = useResource$<{ingredients: TypeIngredient[], fields: TypeFieldsIngredient}>(async () => {
-      const URL = `${loc.url.origin}/ministryOfHealthData/data/parsedFoods.json`;
-      const URL2 = `${loc.url.origin}/ministryOfHealthData/data/parsedFields.json`;
+      const URL = `http://127.0.0.1:8080/foods` //`${loc.url.origin}/ministryOfHealthData/data/parsedFoods.json`;
+      const URL2 = `http://127.0.0.1:8080/fields`//`${loc.url.origin}/ministryOfHealthData/data/fields.json`;
       const res = await fetch(URL);
       const res2 = await fetch(URL2);
       // TODO: remove slice when I do not need to test the error handling
-      const data = (await res.json()).slice(0, 100);
-      const data2 = (await res2.json()).slice(0, 100);
+      const data = await res.json();
+      const data2 = await res2.json();
       const parsed = zodIngredientSchema.array().safeParse(data);
       const parsed2 = zodIngredientFields.array().safeParse(data2);
       if (!parsed.success) throw Promise.reject(parsed.error.message);
