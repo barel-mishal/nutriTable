@@ -1,12 +1,25 @@
-import { $, type QwikChangeEvent, component$, useSignal, useStore } from "@builder.io/qwik";
+import { $, type QwikChangeEvent, component$, useSignal, useStore, createContextId, useContext } from "@builder.io/qwik";
 import { HEIGHT, WEIGHT, AGE, GENDER, type KeyofFittnessType, FittnessSchema, type TypeFittness, listPhysicalActivityLevel, ACTIVITY_LEVEL } from "~/utiles/fitnessCalculators/FittnessSchema";
 import QwikInput from "../ui/QwikInput";
 import QwikSelect, { QwikOption } from "../ui/QwikSelect";
 
+
+export const useFitness = (fitness: Partial<TypeFittness>) => {
+    const fitnessStore = useStore<Partial<TypeFittness>>(fitness);
+    return fitnessStore;
+}
+
+type Fit = ReturnType<typeof useFitness>;
+
+export const fitnessContext = createContextId<Fit>('fit');
+
+
 // to create a modal <div class={'fixed inset-0 bg-black bg-opacity-50'}>lkjlkj</div> 
 const FitnessCalculator = component$((props: any) => {
+    const fitnessStore = useContext(fitnessContext);
     const nameSignal = useSignal<string>(props.name || '');
-    const fitnessStore = useStore<Partial<TypeFittness>>(props.fitnessStore || {});
+    
+    
 
     const computeActivityLevel = $(() => {
         const defaultOption ={value: 'activityLevel', title: 'פעילות', disabled: false, selected: !fitnessStore.activityLevel, label: 'פעילות', id: `input-activityLevel`}
@@ -19,16 +32,10 @@ const FitnessCalculator = component$((props: any) => {
     });
 
     const onFitnessChange = (value: KeyofFittnessType) => $((e: Event | QwikChangeEvent<HTMLSelectElement>, el: HTMLInputElement | HTMLSelectElement) => {
-
         const parsedValue = FittnessSchema.shape[value].safeParse(el.value);
         if (!parsedValue.success || !parsedValue.data === undefined) return;
         (fitnessStore as any)[value] = parsedValue.data;
-
-        console.log(fitnessStore[value])
     });
-
-
-
 
     return <>
     <div class={'h-screen grid place-content-center'}>

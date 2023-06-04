@@ -2,13 +2,7 @@ import { component$ } from "@builder.io/qwik";
 
 
 // to create a modal <div class={'fixed inset-0 bg-black bg-opacity-50'}>lkjlkj</div> 
-const FitnessCalculator = component$((props: any) => {
-
-
-
-
-
-
+const FitnessCalculator = component$(() => {
 
     return <>
     <div class={'h-screen'}>
