@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { KeysOfNumberOrStringProps } from "~/utiles/utilTypes";
+import { type KeysOfNumberOrStringProps } from "~/utiles/utilTypes";
 import { zodConvertibleNumericType, zodConvertibleDateType } from "~/utiles/zodUtiles";
 
 export const zodUnitsSchema = z.object({
